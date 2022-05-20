@@ -1,0 +1,9 @@
+.Attachment{
+    padding:5px 10px;
+    border:1px solid rgba(0,0,0,0.4);
+    border-radius:3px;
+}
+.attIcon{
+    opacity: 0.4;
+    margin-bottom: -2px;
+}

@@ -1,0 +1,21 @@
+.MedicalHistoryCard{
+    width: 100%;
+    margin:20px 0px;
+}
+.tags{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.tag{
+    padding:3px 15px;
+    width: auto;
+    border-radius: 20px;
+    background-color: #66bb6a;
+    font-size: 14px;
+    color: white;
+}
+.rcText{
+    margin-bottom: 20px;
+    font-size: 20px;
+}
