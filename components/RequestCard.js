@@ -11,10 +11,12 @@ export default function RequestCard() {
       <Card>
         <CardContent>
           <div className={styles.tags}>
-            <div className={`${styles.tag} ${styles.tag1}`}>primary</div>
+            <div className={`${styles.tag} ${styles.tag1}`}>
+              Medical History Access
+            </div>
           </div>
           <div className={styles.rcText}>
-            This Hospital wants to add to your medical history
+            Fortis Hospital wants to add to your medical history
           </div>
           <Stack spacing={2} direction="row">
             <Button variant="contained">Accept</Button>
