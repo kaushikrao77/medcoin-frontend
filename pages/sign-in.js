@@ -87,7 +87,7 @@ export default function SignIn() {
                   marginTop: "5px",
                 }}
               >
-                Don't have an account yet?
+                Dont have an account yet?
               </Typography>
               <Link href="/sign-up">
                 <Button variant="text" type="submit" sx={{ marginTop: "5px" }}>
