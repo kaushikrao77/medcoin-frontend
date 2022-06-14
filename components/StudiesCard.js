@@ -22,14 +22,15 @@ export default function HospitalsVisitedCard({ heading = "Fortis Hospital" }) {
             </Typography>
           </div>
           <Typography sx={{ mb: 0.5 }} color="text.secondary">
-            Last activity: 20th March, 2022
+            Gender: Male, Female, Other
           </Typography>
           <Typography sx={{ mb: 0.5 }} color="text.secondary">
-            Records added: 5
+            Country: India
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Attachments: 3
+            Age: 16
           </Typography>
+
           {/* </Stack> */}
           {/* <Typography
             sx={{ mb: 2 }}

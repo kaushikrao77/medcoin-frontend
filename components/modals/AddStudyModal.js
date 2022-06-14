@@ -1,5 +1,5 @@
 import styles from "../../styles/components/Modal.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@mui/material";
 import { HospitalNavbar } from "../Navbar";
 import { Typography, Button, Modal, TextField } from "@mui/material";
@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import FileUpload from "../fileUpload";
+import { useForm } from "react-hook-form";
 import {
   FormControl,
   InputLabel,
@@ -17,8 +18,10 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  FormGroup,
+  Checkbox,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+// import Checkbox from "@mui/material/Checkbox";
 
 // import RecentEntries from "../recent-entries";
 
@@ -27,12 +30,12 @@ export default function AddRecordModal({ addRecordModal, setAddRecordModal }) {
     register,
     handleSubmit,
     watch,
-    setValue,
-    getValues,
     formState: { errors },
   } = useForm();
+  const [country, setCountry] = useState("India");
   const submitFormData = (data) => {
     console.log(data);
+    console.log({ country });
   };
   const [formStep, setFormStep] = useState(1);
   return (
@@ -74,38 +77,138 @@ export default function AddRecordModal({ addRecordModal, setAddRecordModal }) {
               variant="h3"
               className="page-name"
             >
-              Add Patient Record
+              Add Study Details
             </Typography>
-            {formStep == 1 ? (
-              <StepOne
-                setFormStep={setFormStep}
-                formStep={formStep}
-                register={register}
+            <form
+              onSubmit={handleSubmit(submitFormData)}
+              style={{ width: "400px" }}
+            >
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="Study Name"
+                variant="outlined"
+                fullWidth
+                {...register("studyName")}
               />
-            ) : formStep == 2 ? (
-              <StepTwo
-                setFormStep={setFormStep}
-                formStep={formStep}
-                register={register}
-              />
-            ) : formStep == 3 ? (
-              <StepThree
-                setFormStep={setFormStep}
-                formStep={formStep}
-                register={register}
-                setValue={setValue}
-                getValues={getValues}
-              />
-            ) : (
-              <StepFour
-                setFormStep={setFormStep}
-                formStep={formStep}
-                register={register}
-                handleSubmit={handleSubmit}
-                setValue={setValue}
-                getValues={getValues}
-              />
-            )}
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={country}
+                  label="Country"
+                  sx={{ marginBottom: "20px" }}
+                  onChange={(e) => setCountry(e.target.value)}
+                >
+                  <MenuItem value={"India"}>India</MenuItem>
+                  <MenuItem value={"USA"}>USA</MenuItem>
+                  <MenuItem value={"Canada"}>Canada</MenuItem>
+                  <MenuItem value={"Mexico"}>Mexico</MenuItem>
+                  <MenuItem value={"Brazil"}>Brazil</MenuItem>
+                  <MenuItem value={"England"}>England</MenuItem>
+                  <MenuItem value={"Germany"}>Germany</MenuItem>
+                </Select>
+              </FormControl>
+              {/* <FormControl fullWidth>
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                >
+                  <Stack direction="row" spacing={0.5}>
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      value="other"
+                      control={<Radio />}
+                      label="Other"
+                    />
+                  </Stack>
+                </RadioGroup>
+              </FormControl> */}
+              <FormGroup>
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Diseases
+                </FormLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      defaultChecked
+                      checked={true}
+                      onChange={() => {}}
+                    />
+                  }
+                  label="High Blood Pressure"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      defaultChecked
+                      checked={true}
+                      onChange={() => {}}
+                    />
+                  }
+                  label="High Blood Sugar"
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Gender
+                </FormLabel>
+                <Stack direction="row" spacing={0.2}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        defaultChecked
+                        checked={true}
+                        onChange={() => {}}
+                      />
+                    }
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        defaultChecked
+                        checked={true}
+                        onChange={() => {}}
+                      />
+                    }
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        defaultChecked
+                        checked={true}
+                        onChange={() => {}}
+                      />
+                    }
+                    label="Other"
+                  />
+                </Stack>
+              </FormGroup>
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                style={{ marginTop: "20px" }}
+              >
+                Submit
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </Modal>
@@ -113,7 +216,7 @@ export default function AddRecordModal({ addRecordModal, setAddRecordModal }) {
   );
 }
 
-function StepOne({ setFormStep, formStep, register }) {
+function StepOne({ setFormStep, formStep }) {
   const submitFormData = (e) => {
     e.preventDefault();
     setFormStep(formStep + 1);
@@ -126,7 +229,6 @@ function StepOne({ setFormStep, formStep, register }) {
         label="Patient ID"
         variant="outlined"
         fullWidth
-        {...register("patientId")}
       />
       <Button
         variant="contained"
@@ -140,7 +242,7 @@ function StepOne({ setFormStep, formStep, register }) {
   );
 }
 
-function StepTwo({ setFormStep, formStep, register }) {
+function StepTwo({ setFormStep, formStep }) {
   const submitFormData = (e) => {
     e.preventDefault();
     setFormStep(formStep + 1);
@@ -153,7 +255,6 @@ function StepTwo({ setFormStep, formStep, register }) {
         label="Title"
         variant="outlined"
         fullWidth
-        {...register("title")}
       />
       <TextField
         sx={{ marginBottom: "10px" }}
@@ -161,7 +262,6 @@ function StepTwo({ setFormStep, formStep, register }) {
         label="Description"
         variant="outlined"
         fullWidth
-        {...register("description")}
       />
       <Stack direction="row" spacing={2} sx={{ marginTop: "20px" }}>
         <Button
@@ -179,52 +279,11 @@ function StepTwo({ setFormStep, formStep, register }) {
   );
 }
 
-function StepThree({ setFormStep, formStep, register, setValue }) {
-  const [files, setFiles] = useState("");
-  const [fileSize, setFileSize] = useState(true);
-  const [filesArr, setFilesArr] = useState([]);
-
+function StepThree({ setFormStep, formStep }) {
   const submitFormData = (e) => {
     e.preventDefault();
     setFormStep(formStep + 1);
   };
-
-  const uploadFileHandler = (event) => {
-    setFiles(event.target.files);
-    // console.log({ filesBefore: event.target.files });
-    setFilesArr(Array.from(event.target.files));
-    setFileSize(true);
-    const formData = new FormData();
-    for (let i = 0; i < event.target.files.length; i++) {
-      console.log(event.target.files[i].size);
-      if (event.target.files[i].size > 1024) {
-        setFileSize(false);
-        return;
-      }
-      formData.append(`files`, event.target.files[i]);
-    }
-    console.log({ files: event.target.files });
-    console.log({ formData });
-    setValue("files", formData, { shouldValidate: true });
-  };
-  useEffect(() => {
-    // console.log({ filesAfter: files });
-    if (!files) return;
-    // setFileSize(true);
-    // const formData = new FormData();
-    // for (let i = 0; i < files.length; i++) {
-    //   console.log(files[i].size);
-    //   if (files[i].size > 1024) {
-    //     setFileSize(false);
-    //     return;
-    //   }
-    //   formData.append(`files`, files[i]);
-    // }
-    // console.log({ files });
-    // console.log({ formData });
-    // setValue("files", formData, { shouldValidate: true });
-  }, [files]);
-
   return (
     <form onSubmit={submitFormData} style={{ width: "400px" }}>
       {/* <TextField
@@ -246,16 +305,7 @@ function StepThree({ setFormStep, formStep, register, setValue }) {
       >
         Upload all files that need to be attached
       </Typography>
-      <FileUpload
-        setValue={setValue}
-        files={files}
-        setFiles={setFiles}
-        fileSize={fileSize}
-        setFileSize={setFileSize}
-        filesArr={filesArr}
-        setFilesArr={setFilesArr}
-        uploadFileHandler={uploadFileHandler}
-      />
+      <FileUpload />
       <Stack direction="row" spacing={2} sx={{ marginTop: "20px" }}>
         <Button
           variant="contained"
@@ -272,37 +322,19 @@ function StepThree({ setFormStep, formStep, register, setValue }) {
   );
 }
 
-function StepFour({
-  setFormStep,
-  formStep,
-  register,
-  handleSubmit,
-  setValue,
-  getValues,
-}) {
-  const submitFormData = (data) => {
-    console.log(data);
+function StepFour({ setFormStep, formStep }) {
+  const submitFormData = (e) => {
+    e.preventDefault();
     setFormStep(formStep + 1);
   };
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("female");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-  useEffect(() => {
-    setValue("age", age, { shouldValidate: true });
-    setValue("gender", gender, { shouldValidate: true });
-  }, [age, gender]);
   return (
-    <form onSubmit={handleSubmit(submitFormData)} style={{ width: "400px" }}>
+    <form onSubmit={submitFormData} style={{ width: "400px" }}>
       <TextField
         sx={{ marginBottom: "20px" }}
         id="outlined-basic"
         label="Remarks"
         variant="outlined"
         fullWidth
-        {...register("remarks")}
         // value={patientId}
         // onChange={(e) => {
         //   setEmail(e.target.value);
@@ -314,16 +346,14 @@ function StepFour({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={getValues("age") || ""}
+          // value={age}
           label="Age"
           sx={{ marginBottom: "20px" }}
-          onChange={(e) =>
-            setValue("age", e.target.value, { shouldValidate: true })
-          }
+          // onChange={handleChange}
         >
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-          <MenuItem value={30}>30</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
@@ -332,10 +362,6 @@ function StepFour({
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="female"
           name="radio-buttons-group"
-          value={getValues("gender")}
-          onChange={(e) =>
-            setValue("gender", e.target.value, { shouldValidate: true })
-          }
         >
           <Stack direction="row" spacing={0.5}>
             <FormControlLabel

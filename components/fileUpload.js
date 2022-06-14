@@ -1,44 +1,57 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 
-const UploadFile = () => {
-  const [files, setFiles] = useState("");
-  const [filesArr, setFilesArr] = useState([]);
+const UploadFile = ({
+  setValue,
+  files,
+  setFiles,
+  fileSize,
+  setFileSize,
+  uploadFileHandler,
+  filesArr,
+  setFilesArr,
+}) => {
+  // const [files, setFiles] = useState("");
+  // const [filesArr, setFilesArr] = useState([]);
   //state for checking file size
-  const [fileSize, setFileSize] = useState(true);
+  // const [fileSize, setFileSize] = useState(true);
   // for file upload progress message
-  const [fileUploadProgress, setFileUploadProgress] = useState(false);
   //for displaying response message
-  const [fileUploadResponse, setFileUploadResponse] = useState(null);
   //base end point url
-  const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8282";
 
-  const uploadFileHandler = (event) => {
-    setFiles(event.target.files);
-    setFilesArr(Array.from(event.target.files));
-  };
+  // const uploadFileHandler = (event) => {
+  //   setFiles(event.target.files);
+  //   setFilesArr(Array.from(event.target.files));
+  //   setFileSize(true);
+  //   const formData = new FormData();
+  //   for (let i = 0; i < files.length; i++) {
+  //     if (files[i].size > 1024) {
+  //       setFileSize(false);
+  //       return;
+  //     }
+  //     formData.append(`files`, files[i]);
+  //   }
+  //   setValue("files", formData, { shouldValidate: true });
+  // };
 
-  console.log(files);
+  // console.log(files);
 
   const fileSubmitHandler = (event) => {
-    event.preventDefault();
-    setFileSize(true);
-    setFileUploadProgress(true);
-    setFileUploadResponse(null);
-
-    const formData = new FormData();
-
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].size > 1024) {
-        setFileSize(false);
-        setFileUploadProgress(false);
-        setFileUploadResponse(null);
-        return;
-      }
-
-      formData.append(`files`, files[i]);
-    }
-
+    // event.preventDefault();
+    // setFileSize(true);
+    // setFileUploadProgress(true);
+    // setFileUploadResponse(null);
+    // const formData = new FormData();
+    // for (let i = 0; i < files.length; i++) {
+    //   if (files[i].size > 1024) {
+    //     setFileSize(false);
+    //     setFileUploadProgress(false);
+    //     setFileUploadResponse(null);
+    //     return;
+    //   }
+    //   formData.append(`files`, files[i]);
+    // }
+    // setValue("files", formData, { shouldValidate: true });
     // const requestOptions = {
     //   method: "POST",
     //   body: formData,
@@ -49,7 +62,6 @@ const UploadFile = () => {
     //       .get("content-type")
     //       ?.includes("application/json");
     //     const data = isJson && (await response.json());
-
     //     // check for error response
     //     if (!response.ok) {
     //       // get error message
@@ -57,7 +69,6 @@ const UploadFile = () => {
     //       setFileUploadResponse(data.message);
     //       return Promise.reject(error);
     //     }
-
     //     console.log(data.message);
     //     setFileUploadResponse(data.message);
     //   })
@@ -119,9 +130,6 @@ const UploadFile = () => {
       </div>
       {}
       {!fileSize && <p style={{ color: "red" }}>File size exceeded!!</p>}
-      {fileUploadResponse != null && (
-        <p style={{ color: "green" }}>{fileUploadResponse}</p>
-      )}
     </form>
   );
 };
