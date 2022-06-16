@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/patient/hospitals.module.css";
-import Navbar from "../../components/Navbar";
+import { ResearchNavbar } from "../../components/Navbar";
 import StudiesCard from "../../components/StudiesCard";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -22,7 +22,7 @@ export default function HospitalsVisited() {
         addRecordModal={addStudyModal}
         setAddRecordModal={setAddStudyModal}
       />
-      <Navbar />
+      <ResearchNavbar />
       <div className={`container`}>
         <Stack direction={"row"} spacing={2} justifyContent="space-between">
           <div className="page-name">Ongoing Studies</div>
