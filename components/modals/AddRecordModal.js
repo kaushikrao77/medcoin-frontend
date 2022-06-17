@@ -31,9 +31,7 @@ export default function AddRecordModal({ addRecordModal, setAddRecordModal }) {
     getValues,
     formState: { errors },
   } = useForm();
-  const submitFormData = (data) => {
-    console.log(data);
-  };
+  const submitFormData = (data) => {};
   const [formStep, setFormStep] = useState(1);
   return (
     <div className={styles.AddRecordModal}>
@@ -161,7 +159,7 @@ function StepTwo({ setFormStep, formStep, register }) {
         label="Description"
         variant="outlined"
         fullWidth
-        {...register("description")}
+        {...register("desc")}
       />
       <Stack direction="row" spacing={2} sx={{ marginTop: "20px" }}>
         <Button
@@ -246,7 +244,7 @@ function StepThree({ setFormStep, formStep, register, setValue }) {
       >
         Upload all files that need to be attached
       </Typography>
-      <FileUpload
+      {/* <FileUpload
         setValue={setValue}
         files={files}
         setFiles={setFiles}
@@ -255,6 +253,30 @@ function StepThree({ setFormStep, formStep, register, setValue }) {
         filesArr={filesArr}
         setFilesArr={setFilesArr}
         uploadFileHandler={uploadFileHandler}
+      /> */}
+      <TextField
+        sx={{ marginBottom: "20px" }}
+        id="outlined-basic"
+        label="Asset Name"
+        variant="outlined"
+        fullWidth
+        {...register("name")}
+        // value={patientId}
+        // onChange={(e) => {
+        //   setEmail(e.target.value);
+        // }}
+      />
+      <TextField
+        sx={{ marginBottom: "20px" }}
+        id="outlined-basic"
+        label="Asset Link"
+        variant="outlined"
+        fullWidth
+        {...register("link")}
+        // value={patientId}
+        // onChange={(e) => {
+        //   setEmail(e.target.value);
+        // }}
       />
       <Stack direction="row" spacing={2} sx={{ marginTop: "20px" }}>
         <Button
@@ -282,7 +304,31 @@ function StepFour({
 }) {
   const submitFormData = (data) => {
     console.log(data);
+
     setFormStep(formStep + 1);
+    // console.log(data);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", localStorage.getItem("token"));
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    for (const [key, value] of Object.entries(data)) {
+      urlencoded.append(key, value);
+    }
+    urlencoded.append("owner", data.patientId);
+    urlencoded.append("author", localStorage.getItem("userId"));
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:5000/hospital/asset", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("female");
@@ -294,12 +340,15 @@ function StepFour({
     setValue("age", age, { shouldValidate: true });
     setValue("gender", gender, { shouldValidate: true });
   }, [age, gender]);
+  // useEffect(() => {
+  //   setValue("name", "asdf", { shouldValidate: true });
+  // }, []);
   return (
     <form onSubmit={handleSubmit(submitFormData)} style={{ width: "400px" }}>
       <TextField
         sx={{ marginBottom: "20px" }}
         id="outlined-basic"
-        label="Remarks"
+        label="Hospital Name"
         variant="outlined"
         fullWidth
         {...register("remarks")}
@@ -310,31 +359,50 @@ function StepFour({
       />
 
       <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Diagnosed As</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={getValues("diagnosedAs") || ""}
+          label="Age"
+          sx={{ marginBottom: "20px" }}
+          onChange={(e) =>
+            setValue("diagnosedAs", e.target.value, { shouldValidate: true })
+          }
+        >
+          <MenuItem value={1}>Skin Cancer</MenuItem>
+          <MenuItem value={2}>Thyroid</MenuItem>
+          <MenuItem value={3}>High Blood Pressure</MenuItem>
+          <MenuItem value={4}>Alzheimer's</MenuItem>
+          <MenuItem value={5}>Multiple personality disorder</MenuItem>
+        </Select>
+      </FormControl>
+      {/* <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Age</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={getValues("age") || ""}
-          label="Age"
+          value={getValues("diagnosedAs") || ""}
+          label="Diagnosed as"
           sx={{ marginBottom: "20px" }}
           onChange={(e) =>
-            setValue("age", e.target.value, { shouldValidate: true })
+            setValue("diagnosedAs", e.target.value, { shouldValidate: true })
           }
         >
           <MenuItem value={10}>10</MenuItem>
           <MenuItem value={20}>20</MenuItem>
           <MenuItem value={30}>30</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
       <FormControl fullWidth>
         <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="female"
           name="radio-buttons-group"
-          value={getValues("gender")}
+          value={getValues("sex")}
           onChange={(e) =>
-            setValue("gender", e.target.value, { shouldValidate: true })
+            setValue("sex", e.target.value, { shouldValidate: true })
           }
         >
           <Stack direction="row" spacing={0.5}>

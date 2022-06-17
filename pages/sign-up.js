@@ -15,23 +15,81 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import AlertComponent from "../components/Alert";
+import { InputLabel, MenuItem, FormSelect, Select } from "@mui/material";
 
 export default function SignUp() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [date, setDate] = useState("");
-  const [gender, setGender] = useState("");
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const [alertOpen, setAlertOpen] = useState(false);
+  // const onSubmit = data => console.log(data);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("account created");
+  const onSubmit = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    for (const [key, value] of Object.entries(data)) {
+      urlencoded.append(key, value);
+    }
+    console.log({ data });
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:5000/register", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (!result.errors) {
+          localStorage.setItem("token", result.token);
+          localStorage.setItem("userId", result.user._id);
+          if (result.user.role == "research") {
+            router.push("/research-institute/profile");
+          } else if (result.user.role == "hospital") {
+            router.push("/medical-institute/profile");
+          } else {
+            router.push("/patient/profile");
+          }
+        } else {
+          if (Array.isArray(result.errors.msg)) {
+            if (result.errors.msg[0].msg == "IS_EMPTY")
+              setAlertOpen({
+                text: "Please fill out all required fields",
+                type: "error",
+              });
+            else {
+              setAlertOpen({
+                text: result.errors.msg[0].msg,
+                type: "error",
+              });
+            }
+          } else setAlertOpen({ text: result.errors.msg, type: "error" });
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setAlertOpen({ text: error?.msg, type: "error" });
+      });
+    // console.log("account created");
   };
 
   return (
     <>
       <Navbar />
+      <AlertComponent openAlert={alertOpen} setOpenAlert={setAlertOpen} />
       <div className={styles.main}>
         <Card className={styles.cardauth} sx={{ width: "90vw", maxWidth: 600 }}>
           <CardContent>
@@ -48,58 +106,81 @@ export default function SignUp() {
             >
               Create your account
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 sx={{ marginBottom: "20px" }}
                 id="outlined-basic"
-                label="First name"
+                label="Name"
                 variant="outlined"
-                value={firstname}
-                onChange={(e) => {
-                  setFirstname(e.target.value);
-                  console.log(firstname);
-                }}
+                {...register("name")}
                 fullWidth
+                required
               />
 
               <TextField
                 sx={{ marginBottom: "20px" }}
                 id="outlined-basic"
-                label="Last name"
+                label="Email"
                 variant="outlined"
-                value={lastname}
-                onChange={(e) => {
-                  setLastname(e.target.value);
-                }}
+                {...register("email")}
                 fullWidth
+                type="email"
+                required
               />
-
-              <TextField
-                sx={{ marginBottom: "20px" }}
-                id="outlined-basic"
-                label="email"
-                variant="outlined"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                fullWidth
-              />
-
               <TextField
                 sx={{ marginBottom: "20px" }}
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
+                {...register("password")}
+                fullWidth
                 type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                required
+              />
+
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={getValues("role") || "user"}
+                  label="Role"
+                  sx={{ marginBottom: "20px" }}
+                  onChange={(e) =>
+                    setValue("role", e.target.value, { shouldValidate: true })
+                  }
+                >
+                  <MenuItem value={"user"}>Patient</MenuItem>
+                  <MenuItem value={"research"}>Research Institute</MenuItem>
+                  <MenuItem value={"hospital"}>Medical Institute</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="Phone"
+                variant="outlined"
+                {...register("phone")}
+                fullWidth
+              />
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="City"
+                variant="outlined"
+                {...register("city")}
+                fullWidth
+              />
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="Country"
+                variant="outlined"
+                {...register("country")}
                 fullWidth
               />
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Your date of birth"
                   value={date}
@@ -113,9 +194,9 @@ export default function SignUp() {
                     />
                   )}
                 />
-              </LocalizationProvider>
+              </LocalizationProvider> */}
 
-              <FormControl>
+              {/* <FormControl>
                 <FormLabel id="demo-controlled-radio-buttons-group">
                   Gender
                 </FormLabel>
@@ -141,7 +222,7 @@ export default function SignUp() {
                     />
                   </Stack>
                 </RadioGroup>
-              </FormControl>
+              </FormControl> */}
               <br />
               <Button
                 variant="contained"

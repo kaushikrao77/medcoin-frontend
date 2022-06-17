@@ -3,8 +3,32 @@ import Image from "next/image";
 import styles from "../../styles/patient/hospitals.module.css";
 import Navbar from "../../components/Navbar";
 import HospitalsVisitedCard from "../../components/HospitalsVisitedCard";
+import { useState, useEffect } from "react";
 
 export default function HospitalsVisited() {
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", localStorage.getItem("token"));
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:5000/users/${localStorage.getItem("userId")}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setUserDetails(result);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
   return (
     <div className={styles.HospitalsVisited}>
       <Head>
@@ -16,8 +40,10 @@ export default function HospitalsVisited() {
       <div className={`container`}>
         <div className="page-name">Hospitals Visited</div>
         <div className={styles.hospitalsCards}>
-          <HospitalsVisitedCard />
-          <HospitalsVisitedCard />
+          {userDetails?.approvedList?.map((x) => (
+            <HospitalsVisitedCard heading={x.name} />
+          ))}
+          {/* <HospitalsVisitedCard /> */}
         </div>
       </div>
     </div>

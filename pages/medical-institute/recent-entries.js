@@ -35,8 +35,8 @@ export default function RecentEntries() {
           </Button>
         </Stack>
         <div className={styles.requestCards}>
-          <MedicalHistoryCard />
-          <MedicalHistoryCard />
+          {/* <MedicalHistoryCard />
+          <MedicalHistoryCard /> */}
         </div>
       </div>
     </div>

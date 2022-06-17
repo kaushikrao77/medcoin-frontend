@@ -3,8 +3,34 @@ import Image from "next/image";
 import styles from "../../styles/patient/request.module.css";
 import Navbar from "../../components/Navbar";
 import MedicalHistoryCard from "../../components/MedicalHistoryCard";
+import { useEffect, useState } from "react";
 
 export default function MedicalHistory() {
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    console.log("asdfasdf");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", localStorage.getItem("token"));
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:5000/users/${localStorage.getItem("userId")}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setUserDetails(result);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+  console.log(userDetails);
   return (
     <div className={styles.MedicalHistory}>
       <Head>
@@ -16,8 +42,9 @@ export default function MedicalHistory() {
       <div className={`container`}>
         <div className="page-name">Medical History</div>
         <div className={styles.requestCards}>
-          <MedicalHistoryCard />
-          <MedicalHistoryCard />
+          {userDetails?.assets?.map((asset) => (
+            <MedicalHistoryCard asset={asset} />
+          ))}
         </div>
       </div>
     </div>

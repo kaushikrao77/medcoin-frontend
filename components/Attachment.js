@@ -3,7 +3,7 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 
-export default function Attachment() {
+export default function Attachment({ name }) {
   return (
     <div className={styles.Attachment}>
       <Stack spacing={1} direction="row" alignItems="center">
@@ -11,7 +11,7 @@ export default function Attachment() {
           <AttachmentIcon />
         </div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary">
-          x-rayImage.png
+          {name}
         </Typography>
       </Stack>
     </div>

@@ -9,6 +9,7 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import truncate from "../utils/truncate";
 import Attachment from "./Attachment";
+import Link from "next/link";
 
 const bull = (
   <Box
@@ -19,7 +20,8 @@ const bull = (
   </Box>
 );
 
-export default function MedicalHistoryCard() {
+export default function MedicalHistoryCard({ asset }) {
+  console.log({ asset });
   return (
     <div className={styles.MedicalHistoryCard}>
       <Card sx={{ minWidth: 275 }}>
@@ -31,14 +33,14 @@ export default function MedicalHistoryCard() {
                 color="text.secondary"
                 gutterBottom
               >
-                Appolo Eye Hospital
+                {asset.remarks}
               </Typography>
               <Typography variant="h5" sx={{ mb: 1.5 }} component="div">
-                Eye X-Ray with diagnosis
+                {asset.title}
               </Typography>
             </div>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              20th March, 2022 | 9:30AM
+              {asset.createdAt}
             </Typography>
           </Stack>
           <Typography
@@ -48,20 +50,23 @@ export default function MedicalHistoryCard() {
             // height={70}
             minHeight={50}
           >
-            {truncate(
-              `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.`,
+            {/* {truncate(
+             {asset.desc},
               500
-            )}
+            )} */}
           </Typography>
           <Stack spacing={2} direction="row">
-            <Attachment />
-            <Attachment />
+            {asset.link ? (
+              <a target="_blank" href={asset.link}>
+                {/* <div> */}
+                {/* asdf */}
+                <Attachment name={asset.name} />
+                {/* </div> */}
+              </a>
+            ) : (
+              <Attachment name={asset.name} />
+            )}
+            {/* <Attachment /> */}
           </Stack>
         </CardContent>
         <CardActions>

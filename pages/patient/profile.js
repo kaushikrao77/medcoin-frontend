@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/auth.module.css";
 import { TextField, Button } from "@mui/material";
 import Radio from "@mui/material/Radio";
@@ -23,12 +23,34 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [date, setDate] = useState("");
   const [gender, setGender] = useState("");
+  const [userDetails, setUserDetails] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("account created");
   };
 
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", localStorage.getItem("token"));
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:5000/users/${localStorage.getItem("userId")}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setUserDetails(result);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
   return (
     <>
       <Navbar />
@@ -52,26 +74,20 @@ export default function SignUp() {
               <TextField
                 sx={{ marginBottom: "20px" }}
                 id="outlined-basic"
-                label="First name"
+                label="Patient ID"
                 variant="outlined"
-                value={firstname}
-                onChange={(e) => {
-                  setFirstname(e.target.value);
-                  console.log(firstname);
-                }}
+                value={userDetails._id || ""}
                 fullWidth
+                InputLabelProps={{ shrink: true }}
               />
-
               <TextField
                 sx={{ marginBottom: "20px" }}
                 id="outlined-basic"
-                label="Last name"
+                label="Name"
                 variant="outlined"
-                value={lastname}
-                onChange={(e) => {
-                  setLastname(e.target.value);
-                }}
+                value={userDetails.name || ""}
                 fullWidth
+                InputLabelProps={{ shrink: true }}
               />
 
               <TextField
@@ -79,11 +95,36 @@ export default function SignUp() {
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+                value={userDetails.email}
                 fullWidth
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="Phone Number"
+                variant="outlined"
+                value={userDetails.phone}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="City"
+                variant="outlined"
+                value={userDetails.city}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                sx={{ marginBottom: "20px" }}
+                id="outlined-basic"
+                label="Country"
+                variant="outlined"
+                value={userDetails.country}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
               />
 
               {/* <TextField
@@ -99,7 +140,7 @@ export default function SignUp() {
                 fullWidth
               /> */}
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Your date of birth"
                   value={date}
@@ -113,9 +154,9 @@ export default function SignUp() {
                     />
                   )}
                 />
-              </LocalizationProvider>
+              </LocalizationProvider> */}
 
-              <FormControl>
+              {/* <FormControl>
                 <FormLabel id="demo-controlled-radio-buttons-group">
                   Gender
                 </FormLabel>
@@ -141,7 +182,7 @@ export default function SignUp() {
                     />
                   </Stack>
                 </RadioGroup>
-              </FormControl>
+              </FormControl> */}
               <br />
               <Button
                 variant="contained"
