@@ -26,6 +26,14 @@ const researchPages = [
   { name: "Ongoing Studies", route: "/research-institute/studies" },
   { name: "Account Details", route: "/research-institute/account-details" },
 ];
+const landingPages = [
+  { name: "Server github", route: "https://github.com/CAdarsh/money20-server" },
+  {
+    name: "Frontend github",
+    route: "https://github.com/kaushikrao77/medcoin-frontend",
+  },
+  // { name: "Account Details", route: "/research-institute/account-details" },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
@@ -452,5 +460,127 @@ const ResearchNavbar = () => {
     </AppBar>
   );
 };
-export { HospitalNavbar, ResearchNavbar };
+
+const LandingNavbar = () => {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  return (
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            MEDCOIN
+          </Typography>
+          <Link href="/medical-institute/profile">
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={false}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
+              ></Menu>
+            </Box>
+          </Link>
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            MEDCOIN
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {landingPages.map((page, id) => (
+              <div key={id}>
+                <Link href={page.route}>
+                  <Button
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </Box>
+
+          <Link href="/sign-up">
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ background: "white!important", color: "black" }}
+            >
+              Sign Up
+            </Button>
+          </Link>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
+export { HospitalNavbar, ResearchNavbar, LandingNavbar };
 export default ResponsiveAppBar;

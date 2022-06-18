@@ -5,7 +5,7 @@ import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Navbar from "../components/Navbar";
+import { LandingNavbar } from "../components/Navbar";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
@@ -48,6 +48,7 @@ export default function SignIn() {
         if (!result.errors) {
           localStorage.setItem("token", result.token);
           localStorage.setItem("userId", result.user._id);
+          localStorage.setItem("userRole", result.user.role);
           router.push("/patient/profile");
         } else {
           if (Array.isArray(result.errors.msg)) {
@@ -70,7 +71,7 @@ export default function SignIn() {
 
   return (
     <>
-      <Navbar />
+      <LandingNavbar />
       <AlertComponent openAlert={alertOpen} setOpenAlert={setAlertOpen} />
       <div className={styles.main}>
         <Card className={styles.cardauth} sx={{ width: "90vw", maxWidth: 600 }}>

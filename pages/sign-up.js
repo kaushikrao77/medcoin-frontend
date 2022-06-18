@@ -13,7 +13,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
-import Navbar from "../components/Navbar";
+import { LandingNavbar } from "../components/Navbar";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -56,6 +56,7 @@ export default function SignUp() {
         if (!result.errors) {
           localStorage.setItem("token", result.token);
           localStorage.setItem("userId", result.user._id);
+          localStorage.setItem("userRole", result.user.role);
           if (result.user.role == "research") {
             router.push("/research-institute/profile");
           } else if (result.user.role == "hospital") {
@@ -88,7 +89,7 @@ export default function SignUp() {
 
   return (
     <>
-      <Navbar />
+      <LandingNavbar />
       <AlertComponent openAlert={alertOpen} setOpenAlert={setAlertOpen} />
       <div className={styles.main}>
         <Card className={styles.cardauth} sx={{ width: "90vw", maxWidth: 600 }}>

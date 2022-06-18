@@ -33,11 +33,12 @@ export default function Requests() {
       <div className={`container`}>
         <Stack direction={"row"} spacing={2} justifyContent="space-between">
           <div className="page-name">Requests</div>
-          <Stack direction={"row"} spacint={2} sx={{ marginRight: "5px" }}>
+          <Stack direction={"row"} spacint={2}>
             <Button
               variant="contained"
               color="primary"
               onClick={() => setAddStudyModal(true)}
+              sx={{ marginRight: "10px" }}
             >
               Give Access to a Hospital
             </Button>
@@ -52,7 +53,7 @@ export default function Requests() {
         </Stack>
         <div className={styles.requestCards}>
           <RequestCard />
-          <RequestCard />
+          {/* <RequestCard /> */}
         </div>
       </div>
     </div>

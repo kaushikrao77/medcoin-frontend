@@ -40,7 +40,7 @@ export default function MedicalHistoryCard({ asset }) {
               </Typography>
             </div>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {asset.createdAt}
+              {new Date(asset.createdAt).toGMTString()}
             </Typography>
           </Stack>
           <Typography
@@ -50,10 +50,7 @@ export default function MedicalHistoryCard({ asset }) {
             // height={70}
             minHeight={50}
           >
-            {/* {truncate(
-             {asset.desc},
-              500
-            )} */}
+            {truncate(asset?.desc, 500)}
           </Typography>
           <Stack spacing={2} direction="row">
             {asset.link ? (
@@ -69,11 +66,11 @@ export default function MedicalHistoryCard({ asset }) {
             {/* <Attachment /> */}
           </Stack>
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
           <Button size="medium" variant="outlined" fullWidth>
             View More
           </Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </div>
   );

@@ -45,11 +45,11 @@ export default function HospitalsVisitedCard({ heading = "Fortis Hospital" }) {
             <Attachment />
           </Stack> */}
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
           <Button size="medium" variant="outlined" fullWidth>
             View all records
           </Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </div>
   );
