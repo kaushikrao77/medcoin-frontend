@@ -1,6 +1,28 @@
-.container {
-  /* padding: 0 2rem; */
+.landingContainer{
+  padding: 1em;
+  justify-content: center;
+  text-align: center;
 }
+
+
+
+.text{
+  justify-content: center;
+  padding: 2em;
+  text-align: left;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+  position: absolute;
+  top:200px;
+  left:180px;
+  max-width: 700px;
+
+}
+
+.subHeading{
+  max-width: 500px;
+}
+
 
 .main {
   /* min-height: 100vh; */
